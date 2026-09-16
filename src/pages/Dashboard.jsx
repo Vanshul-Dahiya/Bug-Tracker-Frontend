@@ -44,6 +44,26 @@ const Dashboard = () => {
       ticket.status === "closed"
   ).length;
 
+  const todoTickets = tickets.filter(
+    (ticket) => ticket.status === "todo"
+  ).length;
+
+  const inProgressTickets = tickets.filter(
+    (ticket) => ticket.status === "in-progress"
+  ).length;
+
+  const closedTickets = tickets.filter(
+    (ticket) => ticket.status === "closed"
+  ).length;
+
+  const mediumPriority = tickets.filter(
+    (ticket) => ticket.priority === "medium"
+  ).length;
+
+  const lowPriority = tickets.filter(
+    (ticket) => ticket.priority === "low"
+  ).length;
+
   return (
     <div>
 
@@ -170,6 +190,72 @@ const Dashboard = () => {
 
       </div>
 
+
+      <div className="dashboard-stats-panels">
+
+        <section className="panel">
+
+          <div className="panel-header">
+            <h2>Status Overview</h2>
+          </div>
+
+          <div className="overview-list">
+
+            <div className="overview-item">
+              <span>Todo</span>
+              <strong>{todoTickets}</strong>
+            </div>
+
+            <div className="overview-item">
+              <span>In Progress</span>
+              <strong>{inProgressTickets}</strong>
+            </div>
+
+            <div className="overview-item">
+              <span>Resolved</span>
+              <strong>{tickets.filter(
+                (ticket) => ticket.status === "resolved"
+              ).length}</strong>
+            </div>
+
+            <div className="overview-item">
+              <span>Closed</span>
+              <strong>{closedTickets}</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <section className="panel">
+
+          <div className="panel-header">
+            <h2>Priority Overview</h2>
+          </div>
+
+          <div className="overview-list">
+
+            <div className="overview-item">
+              <span>High</span>
+              <strong>{highPriority}</strong>
+            </div>
+
+            <div className="overview-item">
+              <span>Medium</span>
+              <strong>{mediumPriority}</strong>
+            </div>
+
+            <div className="overview-item">
+              <span>Low</span>
+              <strong>{lowPriority}</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
     </div>
   );
 };
