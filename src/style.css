@@ -391,6 +391,22 @@ select:focus {
     font-size: 12px;
 }
 
+.project-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.project-info strong {
+    font-size: 14px;
+}
+
+.project-info span {
+    color: #64748b;
+    font-size: 13px;
+}
+
 /* Tickets */
 
 .filters {

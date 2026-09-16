@@ -261,15 +261,15 @@ const Tickets = () => {
                                         Edit
                                     </Link>
 
-                                    <button
-                                        className="delete-btn"
-                                        onClick={() =>
-                                            handleDelete(ticket._id)
-                                        }
-                                    >
-                                        Delete
-                                    </button>
-
+                                    {user?.role === "admin" && (
+                                        <button
+                                            className="delete-btn"
+                                            onClick={() => handleDelete(ticket._id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    )}
+                                    
                                 </div>
 
                             </div>

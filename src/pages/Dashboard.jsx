@@ -149,7 +149,7 @@ const Dashboard = () => {
                 {project.key}
               </div>
 
-              <div>
+              <div className="project-info">
                 <strong>{project.name}</strong>
 
                 <span>

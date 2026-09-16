@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 import api from "../services/api";
 
 const Projects = () => {
+  const { user } = useAuth();
   const [projects, setProjects] = useState([]);
 
   const [name, setName] = useState("");
@@ -46,7 +48,7 @@ const Projects = () => {
     } catch (error) {
       setError(
         error.response?.data?.message ||
-          "Failed to create project"
+        "Failed to create project"
       );
     }
   };
@@ -111,12 +113,14 @@ const Projects = () => {
               rows={4}
             />
 
-            <button
-              type="submit"
-              className="primary-btn"
-            >
-              Create Project
-            </button>
+            {user?.role === "admin" && (
+              <button
+                type="submit"
+                className="primary-btn"
+              >
+                Create Project
+              </button>
+            )}
 
           </form>
 
