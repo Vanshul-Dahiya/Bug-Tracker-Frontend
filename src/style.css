@@ -590,42 +590,43 @@ select:focus {
 }
 
 .form-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 16px;
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
 }
 
 .secondary-btn {
-  padding: 10px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background: white;
-  cursor: pointer;
+    padding: 10px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
 }
 
 .project-main {
-  flex: 1;
+    flex: 1;
 }
 
 .project-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
 }
 
 .edit-btn,
 .delete-btn {
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  background: white;
-  cursor: pointer;
-  font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background: white;
+    cursor: pointer;
+    font-size: 13px;
 }
 
 .delete-btn {
-  color: #dc2626;
+    color: #dc2626;
 }
+
 /* Messages */
 
 .error-message {
@@ -681,6 +682,83 @@ select:focus {
     flex-direction: column;
     align-items: flex-end;
     min-width: 90px;
+}
+
+.comments-section {
+    margin-top: 30px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.comments-section h2 {
+    margin-bottom: 16px;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.comment-card {
+    padding: 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f9fafb;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.comment-header strong {
+    font-size: 14px;
+}
+
+.comment-header span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.comment-form {
+    margin-bottom: 24px;
+}
+
+.comment-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.comment-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.comment-form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.character-count {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.comment-card p {
+    margin: 0 0 10px;
+    color: #374151;
+    font-size: 14px;
+    white-space: pre-wrap;
 }
 
 /* Responsive */

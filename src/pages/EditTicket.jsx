@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 import api from "../services/api";
 
 const EditTicket = () => {
+  const { user } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -21,6 +23,10 @@ const EditTicket = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+  const [commentLoading, setCommentLoading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -28,10 +34,12 @@ const EditTicket = () => {
           ticketResponse,
           projectsResponse,
           usersResponse,
+          commentsResponse,
         ] = await Promise.all([
           api.get(`/tickets/${id}`),
           api.get("/projects"),
           api.get("/users"),
+          api.get(`/comments/ticket/${id}`),
         ]);
 
         const ticket = ticketResponse.data;
@@ -45,10 +53,11 @@ const EditTicket = () => {
 
         setProjects(projectsResponse.data);
         setUsers(usersResponse.data);
+        setComments(commentsResponse.data);
       } catch (error) {
         setError(
           error.response?.data?.message ||
-            "Failed to load ticket"
+          "Failed to load ticket"
         );
       } finally {
         setLoading(false);
@@ -57,6 +66,64 @@ const EditTicket = () => {
 
     fetchData();
   }, [id]);
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+
+    if (!commentText.trim()) {
+      setError("Comment cannot be empty");
+      return;
+    }
+
+    setError("");
+    setCommentLoading(true);
+
+    try {
+      const response = await api.post(
+        `/comments/ticket/${id}`,
+        {
+          text: commentText.trim(),
+        }
+      );
+
+      setComments((prev) => [
+        ...prev,
+        response.data,
+      ]);
+
+      setCommentText("");
+    } catch (error) {
+      setError(
+        error.response?.data?.message ||
+        "Failed to add comment"
+      );
+    } finally {
+      setCommentLoading(false);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    const confirmed = window.confirm(
+      "Delete this comment?"
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await api.delete(`/comments/${commentId}`);
+
+      setComments((prev) =>
+        prev.filter(
+          (comment) => comment._id !== commentId
+        )
+      );
+    } catch (error) {
+      setError(
+        error.response?.data?.message ||
+        "Failed to delete comment"
+      );
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,7 +145,7 @@ const EditTicket = () => {
     } catch (error) {
       setError(
         error.response?.data?.message ||
-          "Failed to update ticket"
+        "Failed to update ticket"
       );
     } finally {
       setSaving(false);
@@ -241,6 +308,104 @@ const EditTicket = () => {
             </button>
           </div>
         </form>
+
+        <div className="comments-section">
+
+          <h2>Comments</h2>
+
+          <form onSubmit={handleAddComment} className="comment-form">
+
+            <label htmlFor="comment">
+              Comment
+            </label>
+
+            <textarea
+              id="comment"
+              value={commentText}
+              onChange={(e) =>
+                setCommentText(e.target.value)
+              }
+              placeholder="Write a comment..."
+              rows={4}
+              maxLength={500}
+              required
+            />
+
+            <div className="comment-form-footer">
+
+              <span className="character-count">
+                {commentText.length}/500
+              </span>
+
+              <button
+                type="submit"
+                className="primary-btn"
+                disabled={
+                  commentLoading ||
+                  !commentText.trim()
+                }
+              >
+                {commentLoading
+                  ? "Adding..."
+                  : "Add Comment"}
+              </button>
+
+            </div>
+
+          </form>
+
+          <div className="comments-list">
+
+            {comments.map((comment) => (
+              <div
+                className="comment-card"
+                key={comment._id}
+              >
+
+                <div className="comment-header">
+
+                  <strong>
+                    {comment.createdBy?.name ||
+                      "Unknown User"}
+                  </strong>
+
+                  <span>
+                    {new Date(
+                      comment.createdAt
+                    ).toLocaleString()}
+                  </span>
+
+                </div>
+
+                <p>{comment.text}</p>
+
+                {(user?.role === "admin" ||
+                  comment.createdBy?._id ===
+                  user?._id) && (
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        handleDeleteComment(
+                          comment._id
+                        )
+                      }
+                    >
+                      Delete
+                    </button>
+                  )}
+
+              </div>
+            ))}
+
+            {comments.length === 0 && (
+              <div className="empty-state">
+                No comments yet.
+              </div>
+            )}
+
+          </div>
+        </div>
+
       </section>
     </div>
   );
